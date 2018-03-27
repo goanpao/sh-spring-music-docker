@@ -2,23 +2,23 @@
 
 FROM tomcat:8.5.4-jre8
 
-MAINTAINER Gary A. Stafford <garystafford@rochester.rr.com>
-ENV REFRESHED_AT 2016-09-17
+LABEL MAINTAINER="goanpao <sav.extra@gmail.com>"
+ENV REFRESHED_AT 2018-03-25
 
-ENV GITHUB_REPO https://github.com/garystafford/spring-music/raw/build-artifacts
+ENV GITHUB_REPO https://github.com/goanpao/sh-spring-music/releases/download
+ENV GITHUB_TOKEN 8627731ec70993e20644af588c2525b47eda1bdf
+ENV RELEASE v1.0.0
 ENV APP_FILE spring-music.war
 ENV TERM xterm
 ENV JAVA_OPTS -Djava.security.egd=file:/dev/./urandom
 
-RUN apt-get update -qq \
-  && apt-get install -qqy curl wget \
-  && apt-get clean \
-  \
-  && touch /var/log/spring-music.log \
-  && chmod 666 /var/log/spring-music.log \
-  \
-  && wget -q -O /usr/local/tomcat/webapps/ROOT.war ${GITHUB_REPO}/${APP_FILE} \
-  && mv /usr/local/tomcat/webapps/ROOT /usr/local/tomcat/webapps/_ROOT
+RUN apt-get update -qq
+RUN apt-get install -qqy curl wget
+RUN apt-get clean
+RUN touch /var/log/spring-music.log
+RUN chmod 666 /var/log/spring-music.log
+RUN wget -q -O /usr/local/tomcat/webapps/ROOT.war ${GITHUB_REPO}/${RELEASE}/${APP_FILE}
+RUN mv /usr/local/tomcat/webapps/ROOT /usr/local/tomcat/webapps/_ROOT
 
 COPY tomcat-users.xml /usr/local/tomcat/conf/tomcat-users.xml
 

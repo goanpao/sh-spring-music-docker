@@ -1,9 +1,8 @@
 # MongoDB image with host-based data volume
 
 FROM mongo:latest
-
-MAINTAINER Gary A. Stafford <garystafford@rochester.rr.com>
-ENV REFRESHED_AT 2016-07-30
+LABEL MAINTAINER="goanpao <sav.extra@gmail.com>"
+ENV REFRESHED_AT 2018-03-25
 
 VOLUME ["/data/db"]
 WORKDIR /data

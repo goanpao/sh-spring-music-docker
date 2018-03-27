@@ -2,18 +2,18 @@
 
 FROM nginx:latest
 
-MAINTAINER Gary A. Stafford <garystafford@rochester.rr.com>
-ENV REFRESHED_AT 2016-09-17
+LABEL MAINTAINER="goanpao <sav.extra@gmail.com>"
+ENV REFRESHED_AT 2018-03-25
 
-ENV GITHUB_REPO https://github.com/garystafford/spring-music/raw/build-artifacts
+ENV GITHUB_REPO https://github.com/goanpao/sh-spring-music/releases/download
+ENV RELEASE v1.0.0
 ENV STATIC_FILE spring-music-static.zip
 
-RUN apt-get update -qq \
-  && apt-get install -qqy curl wget unzip nano \
-  && apt-get clean \
-  \
-  && wget -O /tmp/${STATIC_FILE} ${GITHUB_REPO}/${STATIC_FILE} \
-  && unzip /tmp/${STATIC_FILE} -d /usr/share/nginx/assets/
+RUN apt-get update -qq
+RUN apt-get install -qqy curl wget unzip nano
+RUN apt-get clean
+RUN wget -O /tmp/${STATIC_FILE} ${GITHUB_REPO}/${RELEASE}/${STATIC_FILE}
+RUN unzip /tmp/${STATIC_FILE} -d /usr/share/nginx/assets/
 
 COPY default.conf /etc/nginx/conf.d/default.conf
 
