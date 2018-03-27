@@ -6,7 +6,6 @@ LABEL MAINTAINER="goanpao <sav.extra@gmail.com>"
 ENV REFRESHED_AT 2018-03-25
 
 ENV GITHUB_REPO https://github.com/goanpao/sh-spring-music/releases/download
-ENV GITHUB_TOKEN 8627731ec70993e20644af588c2525b47eda1bdf
 ENV RELEASE v1.0.0
 ENV APP_FILE spring-music.war
 ENV TERM xterm
