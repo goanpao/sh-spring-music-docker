@@ -29,26 +29,59 @@ services:
     networks:
     - net
     depends_on:
-    - elk
+    - elasticsearch
     hostname: mongodb
     container_name: mongodb
     volumes:
     - music_data:/data/db
     - music_data:/data/configdb
 
-  elk:
-    image: sebp/elk:latest
-    ports:
-    - 5601:5601
-    - 9200:9200
-    - 5044:5044
-    - 5000:5000
-    networks:
-    - net
+  elasticsearch:
+    build:
+      context: elasticsearch/
     volumes:
-    - music_elk:/var/lib/elasticsearch
-    hostname: elk
-    container_name: elk
+      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+      - music_elk:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+    networks:
+      - net
+    hostname: elasticsearch
+    container_name: elasticsearch
+
+  logstash:
+    build:
+      context: logstash/
+    volumes:
+      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+      - ./logstash/pipeline:/usr/share/logstash/pipeline:ro
+    ports:
+      - "5000:5000"
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    networks:
+      - net
+    depends_on:
+      - elasticsearch
+    hostname: logstash
+    container_name: logstash
+
+  kibana:
+    build:
+      context: kibana/
+    volumes:
+      - ./kibana/config/:/usr/share/kibana/config:ro
+    ports:
+      - "5601:5601"
+    networks:
+      - net
+    depends_on:
+      - elasticsearch
+    hostname: kibana
+    container_name: kibana
 
 volumes:
   music_data:
